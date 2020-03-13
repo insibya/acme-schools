@@ -48,19 +48,20 @@ const readStudents = async () => {
 	return (await client.query(SQL)).rows;
 };
 
-// const deleteSchool = async (id) => {
-// 	await client.query('DELETE FROM students WHERE id=$1', [ id ]);
-// };
-// const deleteStudent = async (id) => {
-// 	await client.query('DELETE FROM students WHERE id=$1', [ id ]);
-// };
+const deleteSchool = async (id) => {
+	await client.query('DELETE FROM schools WHERE id=$1', [ id ]);
+};
+const deleteStudent = async (id) => {
+	console.log(id);
+	await client.query('DELETE FROM students WHERE id=$1', [ id ]);
+};
 
 module.exports = {
 	sync,
 	createSchool,
 	createStudent,
 	readSchools,
-	readStudents
-	// deleteSchool,
-	// deleteStudent
+	readStudents,
+	deleteSchool,
+	deleteStudent
 };

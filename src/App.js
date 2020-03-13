@@ -25,14 +25,23 @@ const App = () => {
 		});
 	}, []);
 
-	// const createSchool = async (school) => {
-	// 	const created = (await axios.post('/api/schools', school)).data;
-	// 	setSchools([ ...schools, created ]);
-	// };
-	// const createStudent = async (student) => {
-	// 	const created = (await axios.post('/api/students', student)).data;
-	// 	setStudents([ ...students, created ]);
-	// };
+	const createSchool = async (school) => {
+		const created = (await axios.post('/api/schools', school)).data;
+		setSchools([ ...schools, created ]);
+	};
+	const createStudent = async (student) => {
+		const created = (await axios.post('/api/students', student)).data;
+		setStudents([ ...students, created ]);
+	};
+
+	const deleteSchool = async (id) => {
+		await axios.delete(`/api/schools/${id}`);
+		setSchools(schools.filter((school) => school.id !== id));
+	};
+	const deleteStudent = async (id) => {
+		await axios.delete(`/api/students/${id}`);
+		setStudents(students.filter((student) => student.id !== id));
+	};
 
 	return (
 		<div>
@@ -41,8 +50,8 @@ const App = () => {
 			</h1>
 			{!view && (
 				<div>
-					<Schools schools={schools} />
-					<Students students={students} />
+					<Schools schools={schools} students={students} deleteSchool={deleteSchool} />
+					<Students students={students} schools={schools} deleteStudent={deleteStudent} />
 				</div>
 			)}
 		</div>
