@@ -5,6 +5,18 @@ const Schools = ({ schools, students, deleteSchool }) => {
 		<div>
 			<h2>Schools ({schools.length})</h2>
 			<ul>
+				<li key="0">
+					Unenrolled
+					<ul>
+						{students.filter((student) => !student.schoolId).map((student) => {
+							return (
+								<li key={student.id}>
+									{student.firstName} {student.lastName}
+								</li>
+							);
+						})}
+					</ul>
+				</li>
 				{schools.map((school) => {
 					const filtered = students.filter((student) => student.schoolId === school.id);
 					return (

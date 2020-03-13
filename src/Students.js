@@ -13,7 +13,7 @@ const Students = ({ students, schools, deleteStudent }) => {
 								{student.firstName} {student.lastName}
 							</a>{' '}
 							<button onClick={() => deleteStudent(student.id)}>x</button>
-							enrolled at {!!school && school.name}
+							{student.schoolId ? ` enrolled at ${!!school && school.name}` : ' unenrolled'}
 						</li>
 					);
 				})}

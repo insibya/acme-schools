@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import qs from 'qs';
 import Schools from './Schools';
-//import SchoolForm from './SchoolForm';
-//import SchoolEdit from './SchoolEdit';
+import SchoolForm from './SchoolForm';
+import SchoolEdit from './SchoolEdit';
 import Students from './Students';
-//import StudentForm from './StudentForm';
-//import StudentEdit from './StudentEdit';
+import StudentForm from './StudentForm';
+import StudentEdit from './StudentEdit';
 
 const App = () => {
 	const [ schools, setSchools ] = useState([]);
@@ -48,8 +48,17 @@ const App = () => {
 			<h1>
 				<a href="#">Acme Schools</a>
 			</h1>
+			<h4>
+				{schools.length} school{schools.length !== 1 ? 's' : ''}
+			</h4>
+			<h4>
+				{students.length} student{students.length !== 1 ? 's' : ''} ({students.filter((student) => !!student.schoolId).length}{' '}
+				enrolled)
+			</h4>
 			{!view && (
 				<div>
+					<StudentForm createStudent={createStudent} schools={schools} />
+					<SchoolForm createSchool={createSchool} />
 					<Schools schools={schools} students={students} deleteSchool={deleteSchool} />
 					<Students students={students} schools={schools} deleteStudent={deleteStudent} />
 				</div>

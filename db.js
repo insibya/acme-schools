@@ -9,14 +9,14 @@ const sync = async () => {
     DROP TABLE IF EXISTS schools;
     CREATE TABLE schools(
       id UUID PRIMARY KEY default uuid_generate_v4(),
-      name VARCHAR(255) NOT NULL UNIQUE,
+      name VARCHAR(50) NOT NULL UNIQUE,
       CHECK (char_length(name) > 0)
     );
     CREATE TABLE students(
       id UUID PRIMARY KEY default uuid_generate_v4(),
-      "firstName" VARCHAR(255) NOT NULL UNIQUE,
+      "firstName" VARCHAR(50) NOT NULL UNIQUE,
       CHECK (char_length("firstName") > 0),
-      "lastName" VARCHAR(255) NOT NULL UNIQUE,
+      "lastName" VARCHAR(50) NOT NULL UNIQUE,
       CHECK (char_length("lastName") > 0),
       "schoolId" UUID REFERENCES schools(id) ON DELETE CASCADE
     );
@@ -24,9 +24,10 @@ const sync = async () => {
 	await client.query(SQL);
 
 	const [ ucla, ucsb ] = await Promise.all([ createSchool({ name: 'UCLA' }), createSchool({ name: 'UCSB' }) ]);
-	const [ janice, maxwell ] = await Promise.all([
+	const [ janice, maxwell, tiffany ] = await Promise.all([
 		createStudent({ firstName: 'Janice', lastName: 'Griffith', schoolId: ucla.id }),
-		createStudent({ firstName: 'Maxwell', lastName: 'Smart', schoolId: ucsb.id })
+		createStudent({ firstName: 'Maxwell', lastName: 'Smart', schoolId: ucsb.id }),
+		createStudent({ firstName: 'Tiffany', lastName: 'Tolliver' })
 	]);
 };
 
@@ -52,7 +53,6 @@ const deleteSchool = async (id) => {
 	await client.query('DELETE FROM schools WHERE id=$1', [ id ]);
 };
 const deleteStudent = async (id) => {
-	console.log(id);
 	await client.query('DELETE FROM students WHERE id=$1', [ id ]);
 };
 
