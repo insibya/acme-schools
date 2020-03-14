@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 
-//Fix onSubmitEnroll so each form has its own state?
-//Fix onSubmitEnroll to update the student
-
+//Fix onSubmitEnroll to update the student --- (Why isn't it working?! No errors, but the table isn't being updated?)
 //Fix onSubmitUnenroll to update the student --- (Why isn't it working?! No errors, but the table isn't being updated?)
 
 const Schools = ({ schools, students, updateStudent }) => {
+	const [ enrollId, setEnrollId ] = useState('');
 	const [ unenroll, setUnenroll ] = useState('');
 	const [ schoolId, setSchoolId ] = useState('');
 
 	const onSubmitEnroll = (ev) => {
 		ev.preventDefault();
-		updateStudent({ student, schoolId }).then(() => {
+		const enroll = students.filter((student) => student.id === enrollId);
+		updateStudent({ ...enroll[0], schoolId }).then(() => {
+			setEnrollId('');
 			setSchoolId('');
-			setEnroll('');
 		});
 	};
 	const onSubmitUnenroll = (ev) => {
 		ev.preventDefault();
+		setSchoolId('');
 		updateStudent({ ...unenroll, schoolId }).then(() => {
-			setSchoolId('');
 			setUnenroll('');
 		});
 	};
@@ -48,7 +48,11 @@ const Schools = ({ schools, students, updateStudent }) => {
 						<li key={school.id}>
 							<a href={`#view=school&id=${school.id}`}>{school.name}</a>
 							<form onSubmit={onSubmitEnroll}>
-								<select value={schoolId} onChange={(ev) => setSchoolId(ev.target.value)}>
+								<select
+									onChange={(ev) => {
+										setEnrollId(ev.target.value), setSchoolId(school.id);
+									}}
+								>
 									<option value="">-- Enroll Student --</option>
 									{students.filter((student) => !student.schoolId).map((student) => {
 										return (
@@ -58,7 +62,7 @@ const Schools = ({ schools, students, updateStudent }) => {
 										);
 									})}
 								</select>
-								<button disabled={!schoolId}>Enroll</button>
+								<button disabled={!enrollId}>Enroll</button>
 							</form>
 							<ul>
 								{filtered.map((student) => {

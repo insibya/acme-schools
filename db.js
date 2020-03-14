@@ -14,9 +14,9 @@ const sync = async () => {
     );
     CREATE TABLE students(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-      "firstName" VARCHAR(50) NOT NULL UNIQUE,
+      "firstName" VARCHAR(50) NOT NULL,
       CHECK (char_length("firstName") > 0),
-      "lastName" VARCHAR(50) NOT NULL UNIQUE,
+      "lastName" VARCHAR(50) NOT NULL,
       CHECK (char_length("lastName") > 0),
       "schoolId" UUID REFERENCES schools(id) DEFAULT NULL
     );
@@ -31,7 +31,7 @@ const sync = async () => {
 	const [ janice, maxwell, tiffany ] = await Promise.all([
 		createStudent({ firstName: 'Janice', lastName: 'Griffith', schoolId: ucla.id }),
 		createStudent({ firstName: 'Maxwell', lastName: 'Smart', schoolId: ucsb.id }),
-		createStudent({ firstName: 'Tiffany', lastName: 'Tolliver' })
+		createStudent({ firstName: 'Tiffany', lastName: 'Tolliver', schoolId: null })
 	]);
 };
 
@@ -61,7 +61,6 @@ const updateStudent = async (firstName, lastName, schoolId, id) => {
 	const SQL = 'UPDATE students SET "firstName"=$1, "lastName"=$2, "schoolId"=$3 WHERE id=$4 RETURNING *';
 	return (await client.query(SQL, [ firstName, lastName, schoolId, id ])).rows[0];
 };
-
 // const updateStudent = async (student) => {
 // 	const map = [ 'firstName', 'lastName', 'schoolId' ].reduce((acc, key, idx) => {
 // 		if (!!student[key]) {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 //Fix onSubmitUpdate --- (Why isn't it working?! No errors, but the table isn't being updated?)
-//Fix onClickDelete for schools that still have students --- (updateStudent calls being sent to api/students/undefined?)
+//Fix onClickDelete for schools that still have students --- (Why isn't it working?! No errors, but the table isn't being updated?)
 
 const SchoolEdit = ({ school, students, updateSchool, updateStudent, deleteSchool }) => {
 	const [ name, setName ] = useState('');
@@ -29,7 +29,10 @@ const SchoolEdit = ({ school, students, updateSchool, updateStudent, deleteSchoo
 	const onClickDelete = () => {
 		const disenroll = students.filter((student) => student.schoolId === school.id);
 		if (disenroll) {
-			disenroll.forEach((student) => updateStudent(student.firstName, student.lastName, null, student.id));
+			disenroll.forEach((student) => {
+				const schoolId = '';
+				updateStudent({ ...student, schoolId });
+			});
 		}
 		deleteSchool(school.id);
 		window.location.hash = '#';

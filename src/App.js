@@ -8,6 +8,7 @@ import StudentForm from './StudentForm';
 import StudentEdit from './StudentEdit';
 
 //Figure out how to connect to the darn styles sheet!
+//Phase 1-3 all working! (read, create, delete)
 
 const App = () => {
 	const [ schools, setSchools ] = useState([]);

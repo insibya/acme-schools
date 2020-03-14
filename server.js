@@ -27,7 +27,7 @@ app.put('/api/schools/:id', (req, res, next) => {
 	db.updateSchool(req.params.id).then((school) => res.send(school)).catch(next);
 });
 app.put('/api/students/:id', (req, res, next) => {
-	db.updateStudent(req.param.id).then((student) => res.send(student)).catch(next);
+	db.updateStudent(req.params.id).then((student) => res.send(student)).catch(next);
 });
 
 app.delete('/api/schools/:id', (req, res, next) => {
