@@ -8,17 +8,17 @@ const sync = async () => {
     DROP TABLE IF EXISTS students;
     DROP TABLE IF EXISTS schools;
     CREATE TABLE schools(
-      id UUID PRIMARY KEY default uuid_generate_v4(),
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       name VARCHAR(50) NOT NULL UNIQUE,
       CHECK (char_length(name) > 0)
     );
     CREATE TABLE students(
-      id UUID PRIMARY KEY default uuid_generate_v4(),
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       "firstName" VARCHAR(50) NOT NULL UNIQUE,
       CHECK (char_length("firstName") > 0),
       "lastName" VARCHAR(50) NOT NULL UNIQUE,
       CHECK (char_length("lastName") > 0),
-      "schoolId" UUID REFERENCES schools(id)
+      "schoolId" UUID REFERENCES schools(id) DEFAULT NULL
     );
   `;
 	await client.query(SQL);
@@ -54,22 +54,28 @@ const readStudents = async () => {
 };
 
 const updateSchool = async (name, id) => {
-	return (await client.query('UPDATE schools SET name=$1 WHERE id=$2 RETURNING *', [ name, id ])).rows[0];
+	const SQL = 'UPDATE schools SET name=$1 WHERE id=$2 RETURNING *';
+	return (await client.query(SQL, [ name, id ])).rows[0];
 };
-const updateStudent = async (student) => {
-	const map = [ 'firstName', 'lastName', 'schoolId' ].reduce((acc, key, idx) => {
-		if (!!student[key]) {
-			acc[key] = student[key];
-		}
-		return acc;
-	}, {});
-	let SQL = Object.keys(map).reduce((acc, key, idx) => {
-		acc = `${acc}${idx ? ',' : ''}"${key}"=$${idx + 1}`;
-		return acc;
-	}, '');
-	SQL = `UPDATE students SET ${SQL} WHERE id=$${Object.keys(map).length + 1} RETURNING *;`;
-	return (await client.query(SQL, [ ...Object.values(map), student.id ])).rows[0];
+const updateStudent = async (firstName, lastName, schoolId, id) => {
+	const SQL = 'UPDATE students SET "firstName"=$1, "lastName"=$2, "schoolId"=$3 WHERE id=$4 RETURNING *';
+	return (await client.query(SQL, [ firstName, lastName, schoolId, id ])).rows[0];
 };
+
+// const updateStudent = async (student) => {
+// 	const map = [ 'firstName', 'lastName', 'schoolId' ].reduce((acc, key, idx) => {
+// 		if (!!student[key]) {
+// 			acc[key] = student[key];
+// 		}
+// 		return acc;
+// 	}, {});
+// 	let SQL = Object.keys(map).reduce((acc, key, idx) => {
+// 		acc = `${acc}${idx ? ',' : ''}"${key}"=$${idx + 1}`;
+// 		return acc;
+// 	}, '');
+// 	SQL = `UPDATE students SET ${SQL} WHERE id=$${Object.keys(map).length + 1} RETURNING *;`;
+// 	return (await client.query(SQL, [ ...Object.values(map), student.id ])).rows[0];
+// };
 
 const deleteSchool = async (id) => {
 	await client.query('DELETE FROM schools WHERE id=$1', [ id ]);

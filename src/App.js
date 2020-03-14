@@ -7,6 +7,8 @@ import SchoolEdit from './SchoolEdit';
 import StudentForm from './StudentForm';
 import StudentEdit from './StudentEdit';
 
+//Figure out how to connect to the darn styles sheet!
+
 const App = () => {
 	const [ schools, setSchools ] = useState([]);
 	const [ students, setStudents ] = useState([]);
@@ -70,6 +72,7 @@ const App = () => {
 					school={schools.find((school) => school.id === params.id)}
 					students={students}
 					updateSchool={updateSchool}
+					updateStudent={updateStudent}
 					deleteSchool={deleteSchool}
 				/>
 			)}
@@ -85,12 +88,7 @@ const App = () => {
 				<div>
 					<StudentForm createStudent={createStudent} schools={schools} />
 					<SchoolForm createSchool={createSchool} />
-					<Schools
-						schools={schools}
-						students={students}
-						updateSchool={updateSchool}
-						updateStudent={updateStudent}
-					/>
+					<Schools schools={schools} students={students} updateStudent={updateStudent} />
 				</div>
 			)}
 		</div>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+//Fix onSubmitUpdate --- (Why isn't it working?! No errors, but the table isn't being updated?)
+
 const StudentEdit = ({ student, schools, updateStudent, deleteStudent }) => {
 	const [ firstName, setFirstName ] = useState('');
 	const [ lastName, setLastName ] = useState('');
@@ -19,7 +21,8 @@ const StudentEdit = ({ student, schools, updateStudent, deleteStudent }) => {
 
 	const onSubmitUpdate = (ev) => {
 		ev.preventDefault();
-		updateStudent({ ...student, firstName, lastName, schoolId })
+		const id = student.id;
+		updateStudent({ ...student, firstName, lastName, schoolId, id })
 			.then(() => {
 				setFirstName('');
 				setLastName('');

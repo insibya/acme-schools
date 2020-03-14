@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
 
-const Schools = ({ schools, students, updateSchool, updateStudent }) => {
+//Fix onSubmitEnroll so each form has its own state?
+//Fix onSubmitEnroll to update the student
+
+//Fix onSubmitUnenroll to update the student --- (Why isn't it working?! No errors, but the table isn't being updated?)
+
+const Schools = ({ schools, students, updateStudent }) => {
+	const [ unenroll, setUnenroll ] = useState('');
 	const [ schoolId, setSchoolId ] = useState('');
+
 	const onSubmitEnroll = (ev) => {
 		ev.preventDefault();
-		updateStudent({ firstName, lastName, schoolId }).then(() => {
+		updateStudent({ student, schoolId }).then(() => {
 			setSchoolId('');
+			setEnroll('');
 		});
-		const school = schools.filter((school) => student.schoolId === school.id);
-		updateSchool(school);
 	};
 	const onSubmitUnenroll = (ev) => {
 		ev.preventDefault();
-		updateStudent({ firstName, lastName, schoolId });
-		const school = schools.filter((school) => student.schoolId === school.id);
-		updateSchool(school);
+		updateStudent({ ...unenroll, schoolId }).then(() => {
+			setSchoolId('');
+			setUnenroll('');
+		});
 	};
+
 	return (
 		<div>
 			<h2>Schools ({schools.length})</h2>
@@ -60,7 +68,7 @@ const Schools = ({ schools, students, updateSchool, updateStudent }) => {
 												<a href={`#view=student&id=${student.id}`}>
 													{student.firstName} {student.lastName}
 												</a>
-												<button>Unenroll</button>
+												<button onClick={() => setUnenroll(student)}>Unenroll</button>
 											</form>
 										</li>
 									);
