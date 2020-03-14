@@ -4,7 +4,6 @@ import qs from 'qs';
 import Schools from './Schools';
 import SchoolForm from './SchoolForm';
 import SchoolEdit from './SchoolEdit';
-import Students from './Students';
 import StudentForm from './StudentForm';
 import StudentEdit from './StudentEdit';
 
@@ -34,6 +33,15 @@ const App = () => {
 		setStudents([ ...students, created ]);
 	};
 
+	const updateSchool = async (school) => {
+		const updated = (await axios.put(`/api/schools/${school.id}`, school)).data;
+		setSchools(schools.map((school) => (school.id === updated.id ? updated : school)));
+	};
+	const updateStudent = async (student) => {
+		const updated = (await axios.put(`/api/students/${student.id}`, student)).data;
+		setStudents(students.map((student) => (student.id === updated.id ? updated : student)));
+	};
+
 	const deleteSchool = async (id) => {
 		await axios.delete(`/api/schools/${id}`);
 		setSchools(schools.filter((school) => school.id !== id));
@@ -48,19 +56,41 @@ const App = () => {
 			<h1>
 				<a href="#">Acme Schools</a>
 			</h1>
-			<h4>
-				{schools.length} school{schools.length !== 1 ? 's' : ''}
-			</h4>
-			<h4>
-				{students.length} student{students.length !== 1 ? 's' : ''} ({students.filter((student) => !!student.schoolId).length}{' '}
-				enrolled)
-			</h4>
+			<ul>
+				<li>
+					{schools.length} school{schools.length !== 1 ? 's' : ''}
+				</li>
+				<li>
+					{students.length} student{students.length !== 1 ? 's' : ''} ({students.filter((student) => !!student.schoolId).length}{' '}
+					enrolled)
+				</li>
+			</ul>
+			{view === 'school' && (
+				<SchoolEdit
+					school={schools.find((school) => school.id === params.id)}
+					students={students}
+					updateSchool={updateSchool}
+					deleteSchool={deleteSchool}
+				/>
+			)}
+			{view === 'student' && (
+				<StudentEdit
+					student={students.find((student) => student.id === params.id)}
+					schools={schools}
+					updateStudent={updateStudent}
+					deleteStudent={deleteStudent}
+				/>
+			)}
 			{!view && (
 				<div>
 					<StudentForm createStudent={createStudent} schools={schools} />
 					<SchoolForm createSchool={createSchool} />
-					<Schools schools={schools} students={students} deleteSchool={deleteSchool} />
-					<Students students={students} schools={schools} deleteStudent={deleteStudent} />
+					<Schools
+						schools={schools}
+						students={students}
+						updateSchool={updateSchool}
+						updateStudent={updateStudent}
+					/>
 				</div>
 			)}
 		</div>

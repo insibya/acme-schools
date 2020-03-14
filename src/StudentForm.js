@@ -4,11 +4,9 @@ const StudentForm = ({ createStudent, schools }) => {
 	const [ firstName, setFirstName ] = useState('');
 	const [ lastName, setLastName ] = useState('');
 	const [ schoolId, setSchoolId ] = useState('');
-	let enrollment;
-	schoolId ? enrollment === schoolId : null;
 	const onSubmit = (ev) => {
 		ev.preventDefault();
-		createStudent({ firstName, lastName, enrollment }).then(() => {
+		createStudent({ firstName, lastName, schoolId }).then(() => {
 			setFirstName('');
 			setLastName('');
 			setSchoolId('');
@@ -29,7 +27,7 @@ const StudentForm = ({ createStudent, schools }) => {
 					);
 				})}
 			</select>
-			<button disabled={!firstName || !lastName}>Create</button>
+			<button disabled={!firstName || !lastName || !schoolId}>Create</button>
 		</form>
 	);
 };

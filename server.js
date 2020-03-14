@@ -23,6 +23,13 @@ app.get('/api/students', (req, res, next) => {
 	db.readStudents().then((students) => res.send(students)).catch(next);
 });
 
+app.put('/api/schools/:id', (req, res, next) => {
+	db.updateSchool(req.params.id).then((school) => res.send(school)).catch(next);
+});
+app.put('/api/students/:id', (req, res, next) => {
+	db.updateStudent(req.param.id).then((student) => res.send(student)).catch(next);
+});
+
 app.delete('/api/schools/:id', (req, res, next) => {
 	db.deleteSchool(req.params.id).then(() => res.sendStatus(204)).catch(next);
 });
