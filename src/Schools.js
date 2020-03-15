@@ -10,8 +10,8 @@ const Schools = ({ schools, students, updateStudent }) => {
 
 	const onSubmitEnroll = (ev) => {
 		ev.preventDefault();
-		const enroll = students.filter((student) => student.id === enrollId);
-		updateStudent({ ...enroll[0], schoolId }).then(() => {
+		const enroll = students.find((student) => student.id === enrollId);
+		updateStudent({ ...enroll, schoolId }).then(() => {
 			setEnrollId('');
 			setSchoolId('');
 		});
@@ -29,7 +29,7 @@ const Schools = ({ schools, students, updateStudent }) => {
 			<h2>Schools ({schools.length})</h2>
 			<ul>
 				<li key="0">
-					Unenrolled
+					Unenrolled ({students.filter((student) => !student.schoolId).length} students)
 					<ul>
 						{students.filter((student) => !student.schoolId).map((student) => {
 							return (
@@ -46,7 +46,7 @@ const Schools = ({ schools, students, updateStudent }) => {
 					const filtered = students.filter((student) => student.schoolId === school.id);
 					return (
 						<li key={school.id}>
-							<a href={`#view=school&id=${school.id}`}>{school.name}</a>
+							<a href={`#view=school&id=${school.id}`}>{school.name}</a> ({filtered.length} students)
 							<form onSubmit={onSubmitEnroll}>
 								<select
 									onChange={(ev) => {

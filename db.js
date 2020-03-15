@@ -28,11 +28,16 @@ const sync = async () => {
 		createSchool({ name: 'UCSB' }),
 		createSchool({ name: 'BIOLA' })
 	]);
-	const [ janice, maxwell, tiffany ] = await Promise.all([
+	const [ janice, maxwell, tiffany, barbara, marj ] = await Promise.all([
 		createStudent({ firstName: 'Janice', lastName: 'Griffith', schoolId: ucla.id }),
 		createStudent({ firstName: 'Maxwell', lastName: 'Smart', schoolId: ucsb.id }),
-		createStudent({ firstName: 'Tiffany', lastName: 'Tolliver', schoolId: null })
+		createStudent({ firstName: 'Tiffany', lastName: 'Tolliver' }),
+		createStudent({ firstName: 'Barbara', lastName: 'Walters' }),
+		createStudent({ firstName: 'Marj', lastName: 'Simpson' })
 	]);
+	updateSchool({ name: 'UC Los Angeles', id: ucla.id });
+	updateStudent({ firstName: 'Tiffany', lastName: 'Tolliverson', schoolId: ucla.id, id: tiffany.id });
+	//The update functions work here, but not when called from the UI. What am I missing?!
 };
 
 const createSchool = async ({ name }) => {
@@ -53,28 +58,14 @@ const readStudents = async () => {
 	return (await client.query(SQL)).rows;
 };
 
-const updateSchool = async (name, id) => {
-	const SQL = 'UPDATE schools SET name=$1 WHERE id=$2 RETURNING *';
+const updateSchool = async ({ name, id }) => {
+	const SQL = 'UPDATE schools SET name=($1) WHERE id=($2) RETURNING *';
 	return (await client.query(SQL, [ name, id ])).rows[0];
 };
-const updateStudent = async (firstName, lastName, schoolId, id) => {
-	const SQL = 'UPDATE students SET "firstName"=$1, "lastName"=$2, "schoolId"=$3 WHERE id=$4 RETURNING *';
+const updateStudent = async ({ firstName, lastName, schoolId, id }) => {
+	const SQL = 'UPDATE students SET "firstName"=($1), "lastName"=($2), "schoolId"=($3) WHERE id=($4) RETURNING *';
 	return (await client.query(SQL, [ firstName, lastName, schoolId, id ])).rows[0];
 };
-// const updateStudent = async (student) => {
-// 	const map = [ 'firstName', 'lastName', 'schoolId' ].reduce((acc, key, idx) => {
-// 		if (!!student[key]) {
-// 			acc[key] = student[key];
-// 		}
-// 		return acc;
-// 	}, {});
-// 	let SQL = Object.keys(map).reduce((acc, key, idx) => {
-// 		acc = `${acc}${idx ? ',' : ''}"${key}"=$${idx + 1}`;
-// 		return acc;
-// 	}, '');
-// 	SQL = `UPDATE students SET ${SQL} WHERE id=$${Object.keys(map).length + 1} RETURNING *;`;
-// 	return (await client.query(SQL, [ ...Object.values(map), student.id ])).rows[0];
-// };
 
 const deleteSchool = async (id) => {
 	await client.query('DELETE FROM schools WHERE id=$1', [ id ]);
