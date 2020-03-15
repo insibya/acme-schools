@@ -11,11 +11,13 @@ const SchoolForm = ({ createSchool }) => {
 	};
 
 	return (
-		<form onSubmit={onSubmit}>
-			<h2>Create School</h2>
-			<input value={name} onChange={(ev) => setName(ev.target.value)} />
-			<button disabled={!name}>Create</button>
-		</form>
+		<div className="form">
+			<form onSubmit={onSubmit}>
+				<h2>Create School</h2>
+				<input value={name} onChange={(ev) => setName(ev.target.value)} />
+				<button disabled={!name}>Create</button>
+			</form>
+		</div>
 	);
 };
 

@@ -18,22 +18,24 @@ const StudentForm = ({ createStudent, schools }) => {
 	};
 
 	return (
-		<form onSubmit={onSubmit}>
-			<h2>Create Student</h2>
-			<input value={firstName} onChange={(ev) => setFirstName(ev.target.value)} />
-			<input value={lastName} onChange={(ev) => setLastName(ev.target.value)} />
-			<select value={schoolId} onChange={(ev) => setSchoolId(ev.target.value)}>
-				<option value={null}>-- Select School --</option>
-				{schools.map((school) => {
-					return (
-						<option value={school.id} key={school.id}>
-							{school.name}
-						</option>
-					);
-				})}
-			</select>
-			<button disabled={!firstName || !lastName}>Create</button>
-		</form>
+		<div className="form">
+			<form onSubmit={onSubmit}>
+				<h2>Create Student</h2>
+				<input value={firstName} onChange={(ev) => setFirstName(ev.target.value)} />
+				<input value={lastName} onChange={(ev) => setLastName(ev.target.value)} />
+				<select value={schoolId} onChange={(ev) => setSchoolId(ev.target.value)}>
+					<option value={null}>-- Select School --</option>
+					{schools.map((school) => {
+						return (
+							<option value={school.id} key={school.id}>
+								{school.name}
+							</option>
+						);
+					})}
+				</select>
+				<button disabled={!firstName || !lastName}>Create</button>
+			</form>
+		</div>
 	);
 };
 

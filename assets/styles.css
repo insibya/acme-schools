@@ -1,3 +1,48 @@
-.container {
-	border: 1px solid black;
+h1 {
+	padding-left: 1rem;
+	margin: 0;
+}
+h2 {
+	padding-bottom: .25rem;
+	margin: 0;
+}
+ul {
+	list-style-type: none;
+	padding-bottom: .5rem;
+}
+li {
+	font-size: 16px;
+}
+.main {
+	display: flex;
+	flex-flow: column nowrap;
+}
+.summary {
+	margin-bottom: 0;
+}
+.formBox,
+.display {
+	margin: 0;
+	display: flex;
+	flex-flow: row wrap;
+	width: 100%;
+}
+.form,
+.schoolBox,
+.editBox {
+	border: 1px solid dodgerblue;
+	margin: 1%;
+	padding: 1rem;
+	display: flex;
+	flex-flow: column nowrap;
+	box-sizing: border-box;
+}
+.form {
+	width: 48%;
+}
+.display {
+	padding-left: 0;
+}
+.schoolBox {
+	width: 31.33%;
 }

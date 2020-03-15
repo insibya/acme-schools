@@ -7,9 +7,8 @@ import SchoolEdit from './SchoolEdit';
 import StudentForm from './StudentForm';
 import StudentEdit from './StudentEdit';
 
-//Figure out how to connect to the darn styles sheet!
 //Phase 1-3 all working! (read, create, delete)
-//All updates not working... :-(
+//All updates not working :-( (even though I can make the calls manually within db.js to edit seeded data, so...?)
 
 const App = () => {
 	const [ schools, setSchools ] = useState([]);
@@ -56,11 +55,11 @@ const App = () => {
 	};
 
 	return (
-		<div>
+		<div class="main">
 			<h1>
 				<a href="#">Acme Schools</a>
 			</h1>
-			<ul>
+			<ul class="summary">
 				<li>
 					{schools.length} school{schools.length !== 1 ? 's' : ''}
 				</li>
@@ -88,9 +87,13 @@ const App = () => {
 			)}
 			{!view && (
 				<div>
-					<StudentForm createStudent={createStudent} schools={schools} />
-					<SchoolForm createSchool={createSchool} />
-					<Schools schools={schools} students={students} updateStudent={updateStudent} />
+					<div class="formBox">
+						<StudentForm createStudent={createStudent} schools={schools} />
+						<SchoolForm createSchool={createSchool} />
+					</div>
+					<div class="displayBox">
+						<Schools schools={schools} students={students} updateStudent={updateStudent} />
+					</div>
 				</div>
 			)}
 		</div>

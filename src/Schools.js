@@ -26,9 +26,8 @@ const Schools = ({ schools, students, updateStudent }) => {
 
 	return (
 		<div>
-			<h2>Schools ({schools.length})</h2>
-			<ul>
-				<li key="0">
+			<ul className="display">
+				<li className="schoolBox" key="0">
 					Unenrolled ({students.filter((student) => !student.schoolId).length} students)
 					<ul>
 						{students.filter((student) => !student.schoolId).map((student) => {
@@ -45,8 +44,10 @@ const Schools = ({ schools, students, updateStudent }) => {
 				{schools.map((school) => {
 					const filtered = students.filter((student) => student.schoolId === school.id);
 					return (
-						<li key={school.id}>
-							<a href={`#view=school&id=${school.id}`}>{school.name}</a> ({filtered.length} students)
+						<li className="schoolBox" key={school.id}>
+							<div>
+								<a href={`#view=school&id=${school.id}`}>{school.name}</a> ({filtered.length} students)
+							</div>
 							<form onSubmit={onSubmitEnroll}>
 								<select
 									onChange={(ev) => {

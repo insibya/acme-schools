@@ -59,11 +59,11 @@ const readStudents = async () => {
 };
 
 const updateSchool = async ({ name, id }) => {
-	const SQL = 'UPDATE schools SET name=($1) WHERE id=($2) RETURNING *';
+	const SQL = 'UPDATE schools SET name=$1 WHERE id=$2 RETURNING *';
 	return (await client.query(SQL, [ name, id ])).rows[0];
 };
 const updateStudent = async ({ firstName, lastName, schoolId, id }) => {
-	const SQL = 'UPDATE students SET "firstName"=($1), "lastName"=($2), "schoolId"=($3) WHERE id=($4) RETURNING *';
+	const SQL = 'UPDATE students SET "firstName"=$1, "lastName"=$2, "schoolId"=$3 WHERE id=$4 RETURNING *';
 	return (await client.query(SQL, [ firstName, lastName, schoolId, id ])).rows[0];
 };
 

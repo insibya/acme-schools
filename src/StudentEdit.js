@@ -38,7 +38,7 @@ const StudentEdit = ({ student, schools, updateStudent, deleteStudent }) => {
 	};
 
 	return (
-		<div>
+		<div className="editBox">
 			<form onSubmit={onSubmitUpdate}>
 				<h2>Edit Student</h2>
 				{error && <div>{error}</div>}
